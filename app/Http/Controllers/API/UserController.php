@@ -65,20 +65,4 @@ class UserController extends Controller
             }
         }
     }
-
-
-    public function confirmMail($user_id, $key)
-    {
-
-        $user = User::find($user_id);
-
-        if ($key == $this->confirmKey($user)) {
-            $user->verification_code = null;
-            $user->email_verified_at = now();
-            $user->save();
-            return redirect(env('CLIENT_URL') . '/login');
-        } else {
-            return redirect(env('CLIENT_URL') . '/404');
-        }
-    }
 }

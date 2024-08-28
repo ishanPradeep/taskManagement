@@ -5,9 +5,12 @@ namespace App\Repository\Task;
 use App\Helpers\Helper;
 use App\Http\Resources\Task\TaskCollection;
 use App\Http\Resources\Task\TaskResource;
+use App\Mail\TaskEmail;
 use App\Models\Task;
+use App\Models\User;
 use App\Repository\Task\Interface\TaskRepositoryInterface;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 class TaskRepository implements TaskRepositoryInterface
 {
@@ -72,8 +75,12 @@ class TaskRepository implements TaskRepositoryInterface
     {
         $task = Task::find($request->id);
         $task->status = $request->status;
-
+        $user = User::find($request->user_id);
         if ($task->update()) {
+            Mail::to($user->email)->send(new TaskEmail([
+                'name' => $user->name,
+            ]));
+
             return new TaskResource($task);
         } else {
             return Helper::error(Response::$statusTexts[Response::HTTP_NO_CONTENT], Response::HTTP_NO_CONTENT);

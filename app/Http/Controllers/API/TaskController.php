@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Task;
+use App\Models\User;
 use App\Repository\Task\Interface\TaskRepositoryInterface;
 use Illuminate\Http\Request;
 
@@ -57,6 +58,7 @@ class TaskController extends Controller
         return $this->taskRepository->statusChange($request);
 
     }
+
     /**
      * Display the specified resource.
      */
